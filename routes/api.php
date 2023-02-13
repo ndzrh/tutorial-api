@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\AuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,12 @@ use App\Http\Controllers\PostController;
 //     return $request->user();
 // });
 
-Route::get('/posts', [PostController::class, 'index']);
-Route::get('/posts/{id}', [PostController::class, 'show']);
-Route::get('/posts2/{id}', [PostController::class, 'show2']);
+
+//auth sanctum->utk user dah login shj
+Route::get('/posts', [PostController::class, 'index'])->middleware(['auth:sanctum']); 
+Route::get('/posts/{id}', [PostController::class, 'show'])->middleware(['auth:sanctum']);
+// Route::get('/posts2/{id}', [PostController::class, 'show2']);
+
+Route::post('/login', [AuthenticationController::class, 'login']);
+Route::get('/logout', [AuthenticationController::class, 'logout'])->middleware(['auth:sanctum']);
+Route::get('/main', [AuthenticationController::class, 'main'])->middleware(['auth:sanctum']);
