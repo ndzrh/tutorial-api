@@ -20,6 +20,27 @@ class CommentController extends Controller
 
         $comments = Comment::create($request->all());
 
-        return CommentResource::collection($comments->loadMissing(['commentator'])); //collection-> untuk more than 1 data, dlm arrays
+        // return response()->json($comments->loadMissing(['commentator']));
+        return new CommentResource($comments->loadMissing(['commentator:id,username']));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([ 
+            'comments_content' => 'required',
+        ]);
+
+        $comments = Comment::findOrFail($id);
+        $comments->update($request->only('comments_content'));
+
+        return new CommentResource($comments->loadMissing(['commentator:id,username']));
+    }
+
+    public function destroy($id)
+    {
+        $comments = Comment::findOrFail($id);
+        $comments->delete();
+
+        return new CommentResource($comments->loadMissing(['commentator:id,username']));
     }
 }

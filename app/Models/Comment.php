@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Comment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'post_id',
@@ -18,14 +19,14 @@ class Comment extends Model
     ];
 
     /**
-     * Get the commentator that owns the Comment
+     * Get the user that owns the Comment
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function commentator(): BelongsTo
     {
-        //user_id: FK di table COMMENTS
-        //id: PK di table USERS
-        return $this->belongsTo(User::class, 'user_id', 'id'); 
+        //user_id: dlm table COMMENTS (FK)
+        //id: dlm table USERS (PK)
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

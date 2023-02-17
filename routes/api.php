@@ -30,7 +30,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::patch('/posts/{id}', [PostController::class, 'update'])->middleware('writer'); //update POST
     Route::delete('/posts/{id}', [PostController::class, 'destroy'])->middleware('writer'); //delete POST
 
-    Route::post('/comments', [CommentController::class, 'store']);
+    Route::post('/comments', [CommentController::class, 'store']); //create COMMENT
+    Route::patch('/comments/{id}', [CommentController::class, 'update'])->middleware('commentator');//update COMMENT
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->middleware('commentator'); //delete COMMENT
+    
     
 });
 

@@ -14,7 +14,7 @@ class PostController extends Controller
     {
         $posts = Post::all();
         // return response()->json(['data' => $posts]); // convert to JSON to send data to the front-end
-        return PostDetailResource::collection($posts->loadMissing('writer:id,username')); //collection-> untuk more than 1 data, dlm arrays
+        return PostDetailResource::collection($posts->loadMissing('writer:id,username', 'comments:id,post_id,user_id,comments_content')); //collection-> untuk more than 1 data, dlm arrays
     }
 
     public function show($id)
@@ -22,7 +22,7 @@ class PostController extends Controller
         //writer->nama function dlm relationship, refer to Post model file
         $posts = Post::with('writer:id,username')->findOrFail($id); //writer:id,username-> tak boleh ada SPACE between id & username
         // return response()->json(['data' => $posts]);
-        return new PostDetailResource($posts); //untuk satu data shj, example->find by $id
+        return new PostDetailResource($posts->loadMissing('writer:id,username', 'comments:id,post_id,user_id,comments_content')); //untuk satu data shj, example->find by $id
     }
 
     //pakai eager loading
